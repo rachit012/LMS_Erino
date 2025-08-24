@@ -19,7 +19,7 @@ const Header = ({ user, onLogout }) => {
                   Add Lead
                 </Link>
                 <div className="user-info">
-                  <span>Welcome, {user.firstName}!</span>
+                  {/* <span>ome, {user.firstName}!</span> */}
                   <button onClick={onLogout} className="btn btn-secondary">
                     Logout
                   </button>
