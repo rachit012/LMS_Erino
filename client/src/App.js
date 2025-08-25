@@ -32,12 +32,20 @@ function App() {
 
   const login = async (userData) => {
     const response = await axios.post('/api/auth/login', userData);
+    // If backend sends JWT in response.data.token, store it in localStorage
+    if (response.data.token) {
+      localStorage.setItem('token', response.data.token);
+    }
     setUser(response.data.user);
     return response.data;
   };
 
   const register = async (userData) => {
     const response = await axios.post('/api/auth/register', userData);
+    // If backend sends JWT in response.data.token, store it in localStorage
+    if (response.data.token) {
+      localStorage.setItem('token', response.data.token);
+    }
     setUser(response.data.user);
     return response.data;
   };
