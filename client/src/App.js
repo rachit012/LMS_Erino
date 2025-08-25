@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
@@ -9,6 +10,8 @@ import LeadsList from './components/LeadsList';
 import LeadForm from './components/LeadForm';
 import './App.css';
 
+// Set axios base URL from environment variable or default to relative path
+axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL || '/';
 axios.defaults.withCredentials = true;
 
 function App() {
@@ -31,23 +34,35 @@ function App() {
   };
 
   const login = async (userData) => {
-    const response = await axios.post('/api/auth/login', userData);
-    // If backend sends JWT in response.data.token, store it in localStorage
-    if (response.data.token) {
-      localStorage.setItem('token', response.data.token);
+    try {
+      const response = await axios.post('/api/auth/login', userData);
+      // If backend sends JWT in response.data.token, store it in localStorage
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+      }
+      setUser(response.data.user);
+      return response.data;
+    } catch (error) {
+      // Log error for debugging
+      console.error('Login error:', error, error.response);
+      throw error;
     }
-    setUser(response.data.user);
-    return response.data;
   };
 
   const register = async (userData) => {
-    const response = await axios.post('/api/auth/register', userData);
-    // If backend sends JWT in response.data.token, store it in localStorage
-    if (response.data.token) {
-      localStorage.setItem('token', response.data.token);
+    try {
+      const response = await axios.post('/api/auth/register', userData);
+      // If backend sends JWT in response.data.token, store it in localStorage
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+      }
+      setUser(response.data.user);
+      return response.data;
+    } catch (error) {
+      // Log error for debugging
+      console.error('Register error:', error, error.response);
+      throw error;
     }
-    setUser(response.data.user);
-    return response.data;
   };
 
   const logout = async () => {
